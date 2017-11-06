@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "algorithms.c"
+#include <unistd.h>
+#include "algorithms.hpp"
 
 FILE *inputFile;
 FILE *outputFile;
 
 int main(int argc, char** argv){
 	char c;
+	int length;
 	
 	while (( c = getopt(argc, argv, "c:d:")) != -1){
 		switch (c){
@@ -37,7 +39,7 @@ int main(int argc, char** argv){
 				}
 				
 				char temp[20];
-				int length = strlen(optarg) - 4;	//-4 removes .lzw from file
+				length = strlen(optarg) - 4;	//-4 removes .lzw from file
 				strncpy(temp, optarg, length);	
 				temp[length] = '\0';
 				outputFile = fopen(temp, "w"); 

@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "dictionary.c"
-#include "file.c" // binary file write & read
-#include "array.c" // a faster array for decompression
+#include "dictionary.hpp"
+#include "file.hpp" // binary file write & read
+#include "array.hpp" // a faster array for decompression
 
 enum {
-    dictionarySize = 4095, // maximum number of entries defined for the dictionary (2^12 = 4096)
+    dictionarySize = 4095,
     codeLength = 12, // the codes which are taking place of the substrings
     maxValue = dictionarySize - 1
 };
@@ -20,21 +20,19 @@ void compress(FILE *inputFile, FILE *outputFile) {
     if (prefix == EOF) {
         return;
     }
+	
     int character;
-
     int nextCode;
     int index;
     
-    // LZW starts out with a dictionary of 256 characters (in the case of 8 codeLength) and uses those as the "standard"
-    //  character set.
-    nextCode = 256; // next code is the next available string code
+    nextCode = 256;
+	
     dictionaryInit();
     
-    // while (there is still data to be read)
-    while ((character = getc(inputFile)) != (unsigned)EOF) { // ch = read a character;
+    while ((character = getc(inputFile)) != (unsigned)EOF) {
         
-        // if (dictionary contains prefix+character)
-        if ((index = dictionaryLookup(prefix, character)) != -1) prefix = index; // prefix = prefix+character
+        // check to see if entry (p+c) already exists
+        if ((index = dictionaryLookup(prefix, character)) != -1) prefix = index;
         else { // ...no, try to add it
             // encode s to output file
             writeBinary(outputFile, prefix);
@@ -55,45 +53,38 @@ void compress(FILE *inputFile, FILE *outputFile) {
     dictionaryDestroy();
 }
 
-// decompression
-// to reconstruct a string from an index we need to traverse the dictionary strings backwards, following each
-//   successive prefix index until this prefix index is the empty index
 void decompress(FILE * inputFile, FILE * outputFile) {
-    // int prevcode, currcode
-    int previousCode; int currentCode;
-    int nextCode = 256; // start with the same dictionary of 256 characters
+    int prevCode; 
+	int currCode;
+    int nextCode = 256;
 
     int firstChar;
     
-    // prevcode = read in a code
-    previousCode = readBinary(inputFile);
-    if (previousCode == 0) {
+    prevCode = readBinary(inputFile);
+    if (prevCode == 0) {
         return;
     }
-    fputc(previousCode, outputFile);
+    fputc(prevCode, outputFile);
     
-    // while (there is still data to read)
-    while ((currentCode = readBinary(inputFile)) > 0) { // currcode = read in a code
+    while ((currCode = readBinary(inputFile)) > 0) {
     
-        if (currentCode >= nextCode) {
-            fputc(firstChar = decode(previousCode, outputFile), outputFile); // S+C+S+C+S exception [2.]
+        if (currCode >= nextCode) {
+            fputc(firstChar = decode(prevCode, outputFile), outputFile); // S+C+S+C+S exception
             //printf("%c", firstChar);
             //appendCharacter(firstChar = decode(previousCode, outputFile));
-        } else firstChar = decode(currentCode, outputFile); // first character returned! [1.]
+        } else firstChar = decode(currCode, outputFile); // first character returned! [1.]
         
         // add a new code to the string table
-        if (nextCode < dictionarySize) dictionaryArrayAdd(previousCode, firstChar, nextCode++);
+        if (nextCode < dictionarySize) dictionaryArrayAdd(prevCode, firstChar, nextCode++);
         
-        // prevcode = currcode
-        previousCode = currentCode;
+        prevCode = currCode;
     }
-    //printf("\n");
 }
 
 int decode(int code, FILE * outputFile) {
     int character; int temp;
 
-    if (code > 255) { // decode
+    if (code > 255) {
         character = dictionaryArrayCharacter(code);
         temp = decode(dictionaryArrayPrefix(code), outputFile); // recursion
     } else {

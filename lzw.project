@@ -91,7 +91,15 @@
     </Configuration>
   </Settings>
   <VirtualDirectory Name="src">
-    <File Name="lzw.cpp"/>
-    <File Name="src/algorithms.cpp"/>
+    <File Name="src/lzw.cpp"/>
+    <File Name="src/dictionary.hpp"/>
+    <File Name="src/array.hpp"/>
+    <File Name="src/file.hpp"/>
+    <File Name="src/algorithms.hpp"/>
+  </VirtualDirectory>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+  <VirtualDirectory Name="root">
+    <File Name="prideAndPrejudice.txt"/>
   </VirtualDirectory>
 </CodeLite_Project>
