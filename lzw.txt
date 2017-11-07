@@ -1,1 +1,1 @@
-./Debug/src_algorithms.cpp.o ./Debug/src_lzw.cpp.o ./Debug/src_file.cpp.o ./Debug/src_dictionary.cpp.o ./Debug/src_array.cpp.o
+./Debug/src_main.cpp.o

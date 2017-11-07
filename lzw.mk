@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=LUIZ GUSTAVO JHON RODRIGUES
-Date                   :=06/11/17
+Date                   :=07/11/17
 CodeLitePath           :="/home/bcc/lgjr15/.codelite"
 LinkerName             :=g++
 SharedObjectLinkerName :=g++ -shared -fPIC
@@ -27,7 +27,7 @@ OutputSwitch           :=-o
 LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
-OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
+OutputFile             :=./$(ProjectName)
 Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
@@ -60,7 +60,7 @@ AS       := as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/src_algorithms.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_lzw.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_file.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_dictionary.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_array.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) 
 
 
 
@@ -91,45 +91,13 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/src_algorithms.cpp$(ObjectSuffix): src/algorithms.cpp $(IntermediateDirectory)/src_algorithms.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/bcc/lgjr15/git/lzw/src/algorithms.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_algorithms.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_algorithms.cpp$(DependSuffix): src/algorithms.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_algorithms.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_algorithms.cpp$(DependSuffix) -MM "src/algorithms.cpp"
+$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix): src/main.cpp $(IntermediateDirectory)/src_main.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/bcc/lgjr15/git/lzw/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_main.cpp$(DependSuffix): src/main.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_main.cpp$(DependSuffix) -MM "src/main.cpp"
 
-$(IntermediateDirectory)/src_algorithms.cpp$(PreprocessSuffix): src/algorithms.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_algorithms.cpp$(PreprocessSuffix) "src/algorithms.cpp"
-
-$(IntermediateDirectory)/src_lzw.cpp$(ObjectSuffix): src/lzw.cpp $(IntermediateDirectory)/src_lzw.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/bcc/lgjr15/git/lzw/src/lzw.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_lzw.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_lzw.cpp$(DependSuffix): src/lzw.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_lzw.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_lzw.cpp$(DependSuffix) -MM "src/lzw.cpp"
-
-$(IntermediateDirectory)/src_lzw.cpp$(PreprocessSuffix): src/lzw.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_lzw.cpp$(PreprocessSuffix) "src/lzw.cpp"
-
-$(IntermediateDirectory)/src_file.cpp$(ObjectSuffix): src/file.cpp $(IntermediateDirectory)/src_file.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/bcc/lgjr15/git/lzw/src/file.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_file.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_file.cpp$(DependSuffix): src/file.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_file.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_file.cpp$(DependSuffix) -MM "src/file.cpp"
-
-$(IntermediateDirectory)/src_file.cpp$(PreprocessSuffix): src/file.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_file.cpp$(PreprocessSuffix) "src/file.cpp"
-
-$(IntermediateDirectory)/src_dictionary.cpp$(ObjectSuffix): src/dictionary.cpp $(IntermediateDirectory)/src_dictionary.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/bcc/lgjr15/git/lzw/src/dictionary.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_dictionary.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_dictionary.cpp$(DependSuffix): src/dictionary.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_dictionary.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_dictionary.cpp$(DependSuffix) -MM "src/dictionary.cpp"
-
-$(IntermediateDirectory)/src_dictionary.cpp$(PreprocessSuffix): src/dictionary.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_dictionary.cpp$(PreprocessSuffix) "src/dictionary.cpp"
-
-$(IntermediateDirectory)/src_array.cpp$(ObjectSuffix): src/array.cpp $(IntermediateDirectory)/src_array.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/bcc/lgjr15/git/lzw/src/array.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_array.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_array.cpp$(DependSuffix): src/array.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_array.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_array.cpp$(DependSuffix) -MM "src/array.cpp"
-
-$(IntermediateDirectory)/src_array.cpp$(PreprocessSuffix): src/array.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_array.cpp$(PreprocessSuffix) "src/array.cpp"
+$(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) "src/main.cpp"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

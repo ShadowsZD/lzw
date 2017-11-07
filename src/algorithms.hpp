@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "dictionary.hpp"
+#include "table.hpp"
 #include "file.hpp" // binary file write & read
 #include "array.hpp" // a faster array for decompression
 
 // the codes which are taking place of the substrings
 #define codeBits 12
-#define dictionarySize (0x1 << codeBits) -1 // 2^(codeBits) -1
+#define tableSize (0x1 << codeBits) -1 // 2^(codeBits) -1
 
 void compress(FILE *inputFile, FILE *outputFile);
 void decompress(FILE *inputFile, FILE *outputFile);
@@ -25,7 +25,7 @@ void compress(FILE *inputFile, FILE *outputFile) {
     
     nextCode = 256;
 	
-    createDictionary();
+    createTable();
     
     while ((character = getc(inputFile)) != (unsigned)EOF) {
         
@@ -35,8 +35,8 @@ void compress(FILE *inputFile, FILE *outputFile) {
             // encode prefix
             writeBinary(outputFile, prefix);
             
-            // add (p+c) to dictionary if it has free entries
-            if (nextCode < dictionarySize) insertEntry(prefix, character, nextCode++);
+            // add (p+c) to table if it has free entries
+            if (nextCode < tableSize) insertEntry(prefix, character, nextCode++);
             
             prefix = character;	//swap the prefix
         }
@@ -46,7 +46,7 @@ void compress(FILE *inputFile, FILE *outputFile) {
     
     if (leftover > 0) fputc(leftoverBits << 4, outputFile); //?
     
-    dictionaryDestroy();
+    freeTable();
 }
 
 void decompress(FILE * inputFile, FILE * outputFile) {
@@ -68,8 +68,8 @@ void decompress(FILE * inputFile, FILE * outputFile) {
             fputc(firstChar = decode(prevCode, outputFile), outputFile);
         } else firstChar = decode(currCode, outputFile);
         
-        // add a new code to the string table if dictionary still has slots
-        if (nextCode < dictionarySize) dictionaryArrayAdd(prevCode, firstChar, nextCode++);
+        // add a new code to the string table if table still has slots
+        if (nextCode < tableSize) tableArrayAdd(prevCode, firstChar, nextCode++);
         
         prevCode = currCode;
     }
@@ -80,8 +80,8 @@ int decode(int index, FILE * outputFile) {
 	int temp;
 
     if (index > 255) {
-        character = dictionaryArrayCharacter(index);
-        temp = decode(dictionaryArrayPrefix(index), outputFile);  //recursive call
+        character = tableArrayCharacter(index);
+        temp = decode(tableArrayPrefix(index), outputFile);  //recursive call
     } else {
         character = index; // ASCII
         temp = index;

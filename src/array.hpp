@@ -6,24 +6,24 @@ typedef struct{
     int character; // the last char of string
 } Entry;
 
-void dictionaryArrayAdd(int prefix, int character, int index);
-int dictionaryArrayPrefix(int index);
-int dictionaryArrayCharacter(int index);
+void tableArrayAdd(int prefix, int character, int index);
+int tableArrayPrefix(int index);
+int tableArrayCharacter(int index);
 
-Entry dictionaryArray[4095];
+Entry tableArray[4095];
 
-// add prefix + character to the dictionary
-void dictionaryArrayAdd(int prefix, int character, int index) {
-    dictionaryArray[index].prefix = prefix;
-    dictionaryArray[index].character = character;
+// add prefix + character to the table
+void tableArrayAdd(int prefix, int character, int index) {
+    tableArray[index].prefix = prefix;
+    tableArray[index].character = character;
 }
 
-int dictionaryArrayPrefix(int index) {
-    return dictionaryArray[index].prefix;
+int tableArrayPrefix(int index) {
+    return tableArray[index].prefix;
 }
 
-int dictionaryArrayCharacter(int index) {
-    return dictionaryArray[index].character;
+int tableArrayCharacter(int index) {
+    return tableArray[index].character;
 }
 
 #endif

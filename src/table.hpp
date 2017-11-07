@@ -10,17 +10,17 @@ struct Node {
     struct Node *next;
 };
 
-void createDictionary();
+void createTable();
 void addNode(struct Node *node);
-void freeDictionary();
+void freeTable();
 int search(int prefix, int character);
 int returnPrefix(int index);
 int returnCharacter(int index);
 void insertEntry(int prefix, int character, int index);
 
-struct Node *dictionary, *tail;
+struct Node *table, *tail;
 
-void createDictionary() {
+void createTable() {
     int i;
     struct Node *node;
     for (i = 0; i < 256; i++) {
@@ -32,32 +32,32 @@ void createDictionary() {
 }
 
 void addNode(struct Node *node) {
-    if (dictionary != NULL) tail->next = node;
-    else dictionary = node;
+    if (table != NULL) tail->next = node;
+    else table = node;
     tail = node;
     node->next = NULL;
 }
 
-void freeDictionary() {
+void freeTable() {
 	struct Node* aux;
-    while (dictionary != NULL) {
-		aux = dictionary;
-        dictionary = dictionary->next;
-		free(aux);
+    while (table != NULL) {
+		aux = table;
+        table = table->next;
+		//free(aux);
     }
 }
 
 int search(int prefix, int character) {
     struct Node *node;
-    for (node = dictionary; node != NULL; node = node->next) { // ...traverse forward
-        if (node->prefix == prefix && node->character == character) return node->value;
+    for (node = table; node != NULL; node = node->next) { // ...traverse forward
+        if (node->prefix == prefix && node->character == character) return node->index;
     }
     return -1;
 }
 
 int returnPrefix(int index) {
     struct Node *node;
-    for (node = dictionary; node != NULL; node = node->next) { // ...traverse forward
+    for (node = table; node != NULL; node = node->next) { // ...traverse forward
         if (node->index == index) return node->prefix;
     }
     return -1;
@@ -65,7 +65,7 @@ int returnPrefix(int index) {
 
 int returnCharacter(int index) {
     struct Node *node;
-    for (node = dictionary; node != NULL; node = node->next) { // ...traverse forward
+    for (node = table; node != NULL; node = node->next) { // ...traverse forward
         if (node->index == index) {
             //printf("\nNODE %i %i %i\n", node->value, node->prefix, node->character);
             return node->character;
@@ -74,7 +74,7 @@ int returnCharacter(int index) {
     return -1;
 }
 
-// add prefix + character to the dictionary
+// add prefix + character to the table
 void insertEntry(int prefix, int character, int index) {
     struct Node *node;
     node = (struct Node *)malloc(sizeof(struct Node));

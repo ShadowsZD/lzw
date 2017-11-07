@@ -63,8 +63,8 @@ int main(int argc, char** argv){
 		}
 	}
 	
-	//fclose(inputFile); 
-	//fclose(outputFile);
+	fclose(inputFile); 
+	fclose(outputFile);
 	
     return 0;
 }
