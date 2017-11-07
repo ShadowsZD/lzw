@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 //change to writeCode
-void writeBinary(FILE * output, int code);
+void writeCode(FILE * output, int code);
 int readBinary(FILE * input);
 
 bool leftover = false;
@@ -26,7 +26,7 @@ char leftoverBits;
 	// print(34)
 	// print(56)
 
-void writeBinary(FILE * output, int code) {
+void writeCode(FILE * output, int code) {
     if(leftover){
         char leftoverAndCode = (leftoverBits << 4) + (code >> 8);
 		// code has 3 hexes, 12 bits
@@ -71,13 +71,13 @@ int readBinary(FILE * input) {
     if (code == EOF) return 0;
 
     if (leftover > 0) {
-        code = (leftoverBits << 8) + code;	//shift 8 left because code = 8 + 4 = 12 bits
-        
+		//shift 8 left because code = 8 + 4 = 12 bits
+        code = (leftoverBits << 8) + code;
         leftover = 0;
     } else {
         int nextCode = fgetc(input);
-        
-        leftoverBits = nextCode & 0xF; // save leftover, the last 00001111
+        // save leftover, the LS hex
+        leftoverBits = nextCode & 0xF;
         leftover = 1;
         
         code = (code << 4) + (nextCode >> 4);

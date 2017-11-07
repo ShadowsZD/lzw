@@ -33,7 +33,7 @@ void compress(FILE *inputFile, FILE *outputFile) {
         if ((index = search(prefix, character)) != -1) prefix = index;
         else {
             // encode prefix
-            writeBinary(outputFile, prefix);
+            writeCode(outputFile, prefix);
             
             // add (p+c) to table if it has free entries
             if (nextCode < tableSize) insertEntry(prefix, character, nextCode++);
@@ -42,40 +42,43 @@ void compress(FILE *inputFile, FILE *outputFile) {
         }
     }
 
-    writeBinary(outputFile, prefix); // encode last char
+    writeCode(outputFile, prefix); // encode last char
     
-    if (leftover > 0) fputc(leftoverBits << 4, outputFile); //?
+    if(leftover)
+		fputc(leftoverBits << 4, outputFile);
     
     freeTable();
 }
 
-void decompress(FILE * inputFile, FILE * outputFile) {
+void decompress(FILE* inputFile, FILE* outputFile) {
     int prevCode; 
 	int currCode;
     int nextCode = 256;
 
-    int firstChar;
+    int lastChar;
     
     prevCode = readBinary(inputFile);
-    if (prevCode == 0) {
+    if(prevCode == 0){
         return;
     }
     fputc(prevCode, outputFile);
     
     while ((currCode = readBinary(inputFile)) > 0) {
     
-        if (currCode >= nextCode) {  //next code increments everytime a new "code" is found
-            fputc(firstChar = decode(prevCode, outputFile), outputFile);
-        } else firstChar = decode(currCode, outputFile);
+        if(currCode >= nextCode){
+			//next code increments everytime a new "code" is found
+            fputc(lastChar = decode(prevCode, outputFile), outputFile);
+        } else lastChar = decode(currCode, outputFile);
         
         // add a new code to the string table if table still has slots
-        if (nextCode < tableSize) tableArrayAdd(prevCode, firstChar, nextCode++);
+        if(nextCode < tableSize)
+			tableArrayAdd(prevCode, lastChar, nextCode++);
         
         prevCode = currCode;
     }
 }
 
-int decode(int index, FILE * outputFile) {
+int decode(int index, FILE* outputFile) {
     int character; 
 	int temp;
 

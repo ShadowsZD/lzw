@@ -43,7 +43,7 @@ void freeTable() {
     while (table != NULL) {
 		aux = table;
         table = table->next;
-		//free(aux);
+		free(aux);
     }
 }
 
