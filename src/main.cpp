@@ -7,9 +7,12 @@
 FILE *inputFile;
 FILE *outputFile;
 
+#define pathMaxLength 4096
+
 int main(int argc, char** argv){
 	char c;
 	int length;
+	char temp[pathMaxLength];
 	
 	while (( c = getopt(argc, argv, "c:d:")) != -1){
 		switch (c){
@@ -38,7 +41,6 @@ int main(int argc, char** argv){
 					return 0;
 				}
 				
-				char temp[20];
 				length = strlen(optarg) - 4;	//-4 removes .lzw from file
 				strncpy(temp, optarg, length);	
 				temp[length] = '\0';
