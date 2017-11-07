@@ -5,11 +5,9 @@
 #include "file.hpp" // binary file write & read
 #include "array.hpp" // a faster array for decompression
 
-enum {
-    dictionarySize = 4095,
-    codeLength = 12, // the codes which are taking place of the substrings
-    maxValue = dictionarySize - 1
-};
+// the codes which are taking place of the substrings
+#define codeBits 12
+#define dictionarySize (0x1 << codeBits) -1 // 2^(codeBits) -1
 
 void compress(FILE *inputFile, FILE *outputFile);
 void decompress(FILE *inputFile, FILE *outputFile);
@@ -27,29 +25,27 @@ void compress(FILE *inputFile, FILE *outputFile) {
     
     nextCode = 256;
 	
-    dictionaryInit();
+    createDictionary();
     
     while ((character = getc(inputFile)) != (unsigned)EOF) {
         
-        // check to see if entry (p+c) already exists
-        if ((index = dictionaryLookup(prefix, character)) != -1) prefix = index;
-        else { // ...no, try to add it
-            // encode s to output file
+        //if entry (p+c) already exists, prefix is the found entry
+        if ((index = search(prefix, character)) != -1) prefix = index;
+        else {
+            // encode prefix
             writeBinary(outputFile, prefix);
             
-            // add prefix+character to dictionary
-            if (nextCode < dictionarySize) dictionaryAdd(prefix, character, nextCode++);
+            // add (p+c) to dictionary if it has free entries
+            if (nextCode < dictionarySize) insertEntry(prefix, character, nextCode++);
             
-            // prefix = character
-            prefix = character; //... output the last string after adding the new one
+            prefix = character;	//swap the prefix
         }
     }
-    // encode s to output file
-    writeBinary(outputFile, prefix); // output the last code
+
+    writeBinary(outputFile, prefix); // encode last char
     
-    if (leftover > 0) fputc(leftoverBits << 4, outputFile);
+    if (leftover > 0) fputc(leftoverBits << 4, outputFile); //?
     
-    // free the dictionary here
     dictionaryDestroy();
 }
 
@@ -68,31 +64,28 @@ void decompress(FILE * inputFile, FILE * outputFile) {
     
     while ((currCode = readBinary(inputFile)) > 0) {
     
-        if (currCode >= nextCode) {
-            fputc(firstChar = decode(prevCode, outputFile), outputFile); // S+C+S+C+S exception
-            //printf("%c", firstChar);
-            //appendCharacter(firstChar = decode(previousCode, outputFile));
-        } else firstChar = decode(currCode, outputFile); // first character returned! [1.]
+        if (currCode >= nextCode) {  //next code increments everytime a new "code" is found
+            fputc(firstChar = decode(prevCode, outputFile), outputFile);
+        } else firstChar = decode(currCode, outputFile);
         
-        // add a new code to the string table
+        // add a new code to the string table if dictionary still has slots
         if (nextCode < dictionarySize) dictionaryArrayAdd(prevCode, firstChar, nextCode++);
         
         prevCode = currCode;
     }
 }
 
-int decode(int code, FILE * outputFile) {
-    int character; int temp;
+int decode(int index, FILE * outputFile) {
+    int character; 
+	int temp;
 
-    if (code > 255) {
-        character = dictionaryArrayCharacter(code);
-        temp = decode(dictionaryArrayPrefix(code), outputFile); // recursion
+    if (index > 255) {
+        character = dictionaryArrayCharacter(index);
+        temp = decode(dictionaryArrayPrefix(index), outputFile);  //recursive call
     } else {
-        character = code; // ASCII
-        temp = code;
+        character = index; // ASCII
+        temp = index;
     }
     fputc(character, outputFile);
-    //printf("%c", character);
-    //appendCharacter(character);
     return temp;
 }

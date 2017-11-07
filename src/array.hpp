@@ -2,28 +2,28 @@
 #define ARRAY
 
 typedef struct{
-    int prefix; // prefix for byte > 255
-    int character; // the last byte of the string
-} DictElement;
+    int prefix;
+    int character; // the last char of string
+} Entry;
 
-void dictionaryArrayAdd(int prefix, int character, int value);
-int dictionaryArrayPrefix(int value);
-int dictionaryArrayCharacter(int value);
+void dictionaryArrayAdd(int prefix, int character, int index);
+int dictionaryArrayPrefix(int index);
+int dictionaryArrayCharacter(int index);
 
-DictElement dictionaryArray[4095];
+Entry dictionaryArray[4095];
 
 // add prefix + character to the dictionary
-void dictionaryArrayAdd(int prefix, int character, int value) {
-    dictionaryArray[value].prefix = prefix;
-    dictionaryArray[value].character = character;
+void dictionaryArrayAdd(int prefix, int character, int index) {
+    dictionaryArray[index].prefix = prefix;
+    dictionaryArray[index].character = character;
 }
 
-int dictionaryArrayPrefix(int value) {
-    return dictionaryArray[value].prefix;
+int dictionaryArrayPrefix(int index) {
+    return dictionaryArray[index].prefix;
 }
 
-int dictionaryArrayCharacter(int value) {
-    return dictionaryArray[value].character;
+int dictionaryArrayCharacter(int index) {
+    return dictionaryArray[index].character;
 }
 
 #endif

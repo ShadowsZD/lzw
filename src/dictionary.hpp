@@ -1,84 +1,72 @@
 #ifndef DICTIONARY
 #define DICTIONARY
-/*
- * A singly linked list serving as a dictionary.
- * 
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 
-enum {
-    emptyPrefix = -1 // empty prefix for ASCII characters
+struct Node {
+    int index;
+    int prefix;
+    int character;
+    struct Node *next;
 };
 
-// the "string" in the dictionary consists of the last byte of the string and an index to a prefix for that string
-struct DictNode {
-    int value; // the position in the list
-    int prefix; // prefix for byte > 255
-    int character; // the last byte of the string
-    struct DictNode *next;
-};
+void createDictionary();
+void addNode(struct Node *node);
+void freeDictionary();
+int search(int prefix, int character);
+int returnPrefix(int index);
+int returnCharacter(int index);
+void insertEntry(int prefix, int character, int index);
 
-void dictionaryInit();
-void appendNode(struct DictNode *node);
-void dictionaryDestroy();
-int dictionaryLookup(int prefix, int character);
-int dictionaryPrefix(int value);
-int dictionaryCharacter(int value);
-void dictionaryAdd(int prefix, int character, int value);
+struct Node *dictionary, *tail;
 
-// the dictionary
-struct DictNode *dictionary, *tail;
-
-// initialize the dictionary of ASCII characters @12bits
-void dictionaryInit() {
+void createDictionary() {
     int i;
-    struct DictNode *node;
-    for (i = 0; i < 256; i++) { // ASCII
-        node = (struct DictNode *)malloc(sizeof(struct DictNode));
-        node->prefix = emptyPrefix;
+    struct Node *node;
+    for (i = 0; i < 256; i++) {
+        node = (struct Node *)malloc(sizeof(struct Node));
+        node->prefix = -1;
         node->character = i;
-        appendNode(node);
+        addNode(node);
     }       
 }
 
-// add node to the list
-void appendNode(struct DictNode *node) {
+void addNode(struct Node *node) {
     if (dictionary != NULL) tail->next = node;
     else dictionary = node;
     tail = node;
     node->next = NULL;
 }
 
-// destroy the whole dictionary down to NULL
-void dictionaryDestroy() {
+void freeDictionary() {
+	struct Node* aux;
     while (dictionary != NULL) {
-        dictionary = dictionary->next; /* the head now links to the next element */
+		aux = dictionary;
+        dictionary = dictionary->next;
+		free(aux);
     }
 }
 
-// is prefix + character in the dictionary?
-int dictionaryLookup(int prefix, int character) {
-    struct DictNode *node;
+int search(int prefix, int character) {
+    struct Node *node;
     for (node = dictionary; node != NULL; node = node->next) { // ...traverse forward
         if (node->prefix == prefix && node->character == character) return node->value;
-    }
-    return emptyPrefix;
-}
-
-int dictionaryPrefix(int value) {
-    struct DictNode *node;
-    for (node = dictionary; node != NULL; node = node->next) { // ...traverse forward
-        if (node->value == value) return node->prefix;
     }
     return -1;
 }
 
-int dictionaryCharacter(int value) {
-    struct DictNode *node;
+int returnPrefix(int index) {
+    struct Node *node;
     for (node = dictionary; node != NULL; node = node->next) { // ...traverse forward
-        if (node->value == value) {
+        if (node->index == index) return node->prefix;
+    }
+    return -1;
+}
+
+int returnCharacter(int index) {
+    struct Node *node;
+    for (node = dictionary; node != NULL; node = node->next) { // ...traverse forward
+        if (node->index == index) {
             //printf("\nNODE %i %i %i\n", node->value, node->prefix, node->character);
             return node->character;
         }
@@ -87,14 +75,14 @@ int dictionaryCharacter(int value) {
 }
 
 // add prefix + character to the dictionary
-void dictionaryAdd(int prefix, int character, int value) {
-    struct DictNode *node;
-    node = (struct DictNode *)malloc(sizeof(struct DictNode));
-    node->value = value;
+void insertEntry(int prefix, int character, int index) {
+    struct Node *node;
+    node = (struct Node *)malloc(sizeof(struct Node));
+    node->index = index;
     node->prefix = prefix;
     node->character = character;
     //printf("\n(%i) = (%i) + (%i)\n", node->value, node->prefix, node->character);
-    appendNode(node);
+    addNode(node);
 }
 
 #endif
