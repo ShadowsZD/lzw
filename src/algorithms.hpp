@@ -24,19 +24,19 @@ void compress(FILE *inputFile, FILE *outputFile) {
     int index;
     
     nextCode = 256;
-	
-    createTable();
+	Table table;
+    table.create();
     
     while ((character = getc(inputFile)) != (unsigned)EOF) {
         
         //if entry (p+c) already exists, prefix is the found entry
-        if ((index = search(prefix, character)) != -1) prefix = index;
+        if ((index = table.search(prefix, character)) != -1) prefix = index;
         else {
             // encode prefix
             writeCode(outputFile, prefix);
             
             // add (p+c) to table if it has free entries
-            if (nextCode < tableSize) insertEntry(prefix, character, nextCode++);
+            if (nextCode < tableSize) table.insertEntry(prefix, character, nextCode++);
             
             prefix = character;	//swap the prefix
         }
@@ -47,7 +47,7 @@ void compress(FILE *inputFile, FILE *outputFile) {
     if(leftover)
 		fputc(leftoverBits << 4, outputFile);
     
-    freeTable();
+    table.freeTable();
 }
 
 void decompress(FILE* inputFile, FILE* outputFile) {
