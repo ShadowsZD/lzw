@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="lzw" InternalType="Console">
   <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
     <Plugin Name="CMakePlugin">
       <![CDATA[[{
   "name": "Debug",
@@ -13,18 +16,16 @@
   "parentProject": ""
  }]]]>
     </Plugin>
-    <Plugin Name="qmake">
-      <![CDATA[00010001N0005Debug000000000000]]>
-    </Plugin>
   </Plugins>
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="src/array.hpp"/>
-    <File Name="src/file.hpp"/>
     <File Name="src/algorithms.hpp"/>
     <File Name="src/table.hpp"/>
     <File Name="src/main.cpp"/>
+    <File Name="src/lzw.hpp"/>
+    <File Name="src/iolzw.hpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="root">
     <File Name="prideAndPrejudice.txt"/>

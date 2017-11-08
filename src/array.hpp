@@ -1,25 +1,29 @@
 #ifndef ARRAY
 #define ARRAY
 
-typedef struct{
-    int prefix;
-    int character; // the last char of string
-} EntryArr;
+#include "lzw.hpp"
 
-EntryArr tableArray[4095];
+class TableLzwArr{
+public:
+	entry arr[tableSizeMax];
+	
+	TableLzwArr() {}
+	
+	// add prefix + character to the table
+	void add(int prefix, int character, int code) {
+		arr[code].prefix = prefix;
+		arr[code].character = character;
+	}
+	
+	int prefix(int code) {
+		return arr[code].prefix;
+	}
+	
+	int character(int code) {
+		return arr[code].character;
+	}
+};
 
-// add prefix + character to the table
-void tableArrayAdd(int prefix, int character, int code) {
-    tableArray[code].prefix = prefix;
-    tableArray[code].character = character;
-}
 
-int tableArrayPrefix(int code) {
-    return tableArray[code].prefix;
-}
-
-int tableArrayCharacter(int code) {
-    return tableArray[code].character;
-}
 
 #endif

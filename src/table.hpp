@@ -3,73 +3,41 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <stdlib.h>	
+#include <stdlib.h>
+#include <map>
+#include <tuple>
 
-struct Entry {
-	int code;
-	int prefix;
-	int character;
-};
+#include "lzw.hpp"
 
 class TableLzw {
 public:
-	ssize_t size;
-	Entry arr[4096];
+	std::map<entry, int> map;
+	
+	ssize_t size(){ return map.size(); }
 	
 	TableLzw() {
-		size = 0;
-		Entry ent;
 		int i;
+		// add ASCII characters
 		for (i = 0; i < 256; ++i) {
-			ent.prefix = -1;
-			ent.character = i;
-			ent.code = i;
-			add(ent);
+			add(prefixNULL, i);
 		}
-	}
-	
-	void add(Entry ent) {
-		arr[size] = ent;
-		size++;
 	}
 	
 	void add(int prefix, int character) {
-		Entry ent;
-		ent.code = size;
-		ent.prefix = prefix;
-		ent.character = character;
+		entry tmp(prefix, character);
+		int code = map.size();
+		map[tmp] = code;
 		//printf("\n(%i) = (%i) + (%i)\n", ent.code, ent.prefix, ent.character);
-		add(ent);
 	}
 	
 	int search(int prefix, int character) {
-		for (int i = 0; i < size; ++i) {
-			if (arr[i].prefix == prefix && arr[i].character == character){
-				if(i != arr[i].code)
-					std::cout << "found diff " << i << ":" << arr[i].code << std::endl;
-				return arr[i].code;
-			}
+		entry tmp(prefix, character);
+		auto search = map.find(tmp);
+		if ( search != map.end() ) {
+			return search->second;
+		} else {
+			return -1;
 		}
-		return -1;
-	}
-	
-	
-	int prefix(int code) {
-		for (int i = 0; i < size; ++i) {
-			if (arr[i].code == code)
-				return arr[i].prefix;
-		}
-		return -1;
-	}
-	
-	int character(int code) {
-		for (int i = 0; i < size; ++i) {
-			if (arr[i].code == code) {
-				//printf("\nEntry %i %i %i\n", arr[i].code, arr[i].prefix, arr[i].character);
-				return arr[i].character;
-			}
-		}
-		return -1;
 	}
 };
 
