@@ -28,31 +28,40 @@ void decompress(FILE* inputFile, FILE* outputFile) {
 	while ((currCode = readBinary(inputFile)) > 0) {
 
 		if(currCode >= nextCode){
-			//next code increments everytime a new "code" is found
+			// nextCode increments everytime a new "code" is found
 			fputc(lastChar = decode(table, prevCode, outputFile), outputFile);
-		} else lastChar = decode(table, currCode, outputFile);
+		} else {
+			lastChar = decode(table, currCode, outputFile);
+		}
 		
-		// add a new code to the string table if table still has slots
-		if(nextCode < tableSizeMax)
-			table.add(prevCode, lastChar, nextCode++);
+		// add new code to the table if not full
+		if(nextCode < tableSizeMax){
+			table.add(prevCode, lastChar, nextCode);
+			nextCode++;
+		}
 		
 		prevCode = currCode;
 	}
 }
 
 int decode(TableLzwArr& table, int code, FILE* outputFile) {
-	char character; 
-	int temp;
-
-	if (code > 255) {
+	char character;
+	std::string rdecoded;
+	
+	while (code > 255) {
+		// get the last character of this code
 		character = table.character(code);
-		temp = decode(table, table.prefix(code), outputFile);  //recursive call
-	} else {
-		character = code; // ASCII
-		temp = code;
+		rdecoded.push_back(character);
+		// continue with the prefix
+		code = table.prefix(code);
 	}
-	fputc(character, outputFile);
-	return temp;
+	// code is now ASCII
+	rdecoded.push_back(code);
+	// rdecoded contains reverse the string equivalent to the code
+	for(ssize_t c = rdecoded.size()-1; c > -1; --c)
+		fputc(rdecoded.at(c), outputFile);
+	
+	return code;
 }
 
 
