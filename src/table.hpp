@@ -1,5 +1,5 @@
-#ifndef DICTIONARY
-#define DICTIONARY
+#ifndef TABLEHPP
+#define TABLEHPP
 
 #include <iostream>
 #include <stdio.h>
@@ -24,6 +24,8 @@ public:
 	}
 	
 	void add(int prefix, int character) {
+		if (size() >= tableSizeMax)
+			return;
 		entry tmp(prefix, character);
 		int code = map.size();
 		map[tmp] = code;

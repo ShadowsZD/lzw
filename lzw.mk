@@ -2,25 +2,25 @@
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
-## Debug
+## Release
 ProjectName            :=lzw
-ConfigurationName      :=Debug
-WorkspacePath          := "/home/bcc/lgjr15/c++"
-ProjectPath            := "/home/bcc/lgjr15/git/lzw"
-IntermediateDirectory  :=./Debug
+ConfigurationName      :=Release
+WorkspacePath          :=E:/Users/Serbena/Git
+ProjectPath            :=E:/Users/Serbena/Git/lzw
+IntermediateDirectory  :=./Release
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=LUIZ GUSTAVO JHON RODRIGUES
-Date                   :=07/11/17
-CodeLitePath           :="/home/bcc/lgjr15/.codelite"
-LinkerName             :=g++
-SharedObjectLinkerName :=g++ -shared -fPIC
+User                   :=bruno
+Date                   :=09/11/2017
+CodeLitePath           :="C:/Program Files/CodeLite"
+LinkerName             :=C:/TDM-GCC-64/bin/g++.exe
+SharedObjectLinkerName :=C:/TDM-GCC-64/bin/g++.exe -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
-PreprocessSuffix       :=.o.i
-DebugSwitch            :=-gstab
+PreprocessSuffix       :=.i
+DebugSwitch            :=-g 
 IncludeSwitch          :=-I
 LibrarySwitch          :=-l
 OutputSwitch           :=-o 
@@ -28,13 +28,15 @@ LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 OutputFile             :=./$(ProjectName)
-Preprocessors          :=
+Preprocessors          :=$(PreprocessorSwitch)NDEBUG 
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
-PreprocessOnlySwitch   :=-E 
+PreprocessOnlySwitch   :=-E
 ObjectsFileList        :="lzw.txt"
 PCHCompileFlags        :=
-MakeDirCommand         :=mkdir -p
+MakeDirCommand         :=makedir
+RcCmpOptions           := 
+RcCompilerName         :=C:/TDM-GCC-64/bin/windres.exe
 LinkOptions            :=  
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch). 
 IncludePCH             := 
@@ -47,19 +49,19 @@ LibPath                := $(LibraryPathSwitch).
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := ar rcus
-CXX      := g++
-CC       := gcc
-CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
-CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
+AR       := C:/TDM-GCC-64/bin/ar.exe rcu
+CXX      := C:/TDM-GCC-64/bin/g++.exe
+CC       := C:/TDM-GCC-64/bin/gcc.exe
+CXXFLAGS :=  -std=c++11 -O2 -Wall $(Preprocessors)
+CFLAGS   :=  -O2 -Wall $(Preprocessors)
 ASFLAGS  := 
-AS       := as
+AS       := C:/TDM-GCC-64/bin/as.exe
 
 
 ##
 ## User defined environment variables
 ##
-CodeLiteDir:=/usr/share/codelite
+CodeLiteDir:=C:\Program Files\CodeLite
 Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) 
 
 
@@ -79,11 +81,11 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
 
 MakeIntermediateDirs:
-	@test -d ./Debug || $(MakeDirCommand) ./Debug
+	@$(MakeDirCommand) "./Release"
 
 
 $(IntermediateDirectory)/.d:
-	@test -d ./Debug || $(MakeDirCommand) ./Debug
+	@$(MakeDirCommand) "./Release"
 
 PreBuild:
 
@@ -92,12 +94,12 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix): src/main.cpp $(IntermediateDirectory)/src_main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/bcc/lgjr15/git/lzw/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "E:/Users/Serbena/Git/lzw/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_main.cpp$(DependSuffix): src/main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_main.cpp$(DependSuffix) -MM "src/main.cpp"
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_main.cpp$(DependSuffix) -MM src/main.cpp
 
 $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) "src/main.cpp"
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) src/main.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
@@ -105,6 +107,6 @@ $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
 ## Clean
 ##
 clean:
-	$(RM) -r ./Debug/
+	$(RM) -r ./Release/
 
 

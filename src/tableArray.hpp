@@ -1,5 +1,5 @@
-#ifndef ARRAY
-#define ARRAY
+#ifndef TABLEARRAYHPP
+#define TABLEARRAYHPP
 
 #include "lzw.hpp"
 
@@ -23,7 +23,6 @@ public:
 		return arr[code].character;
 	}
 };
-
 
 
 #endif

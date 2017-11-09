@@ -1,13 +1,15 @@
 #ifndef LZWHPP
 #define LZWHPP
 
+#include <tuple>
 // the codes which are taking place of the substrings
-#define codeBits 12
-#define tableSizeMax (0x1 << codeBits) -1 // 2^(codeBits) -1
+#define codeBits (12)
+#define tableSizeMax ((0x1 << codeBits) -1) // 2^(codeBits) -1
 
-#define prefixNULL -1
+#define prefixNULL (-1)
 
 //typedef std::tuple<int, int> entry;
+//enum { tprefix, tcharacter };
 struct entry { 
 	int prefix;
 	int character; // the last char of string
