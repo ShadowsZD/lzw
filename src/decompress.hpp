@@ -26,10 +26,10 @@ void decompress(FILE* inputFile, FILE* outputFile) {
 	fputc(prevCode, outputFile);
 	
 	while ((currCode = readBinary(inputFile)) > 0) {
-		if(currCode >= nextCode){
-			fputc(firstChar = decode(table, prevCode, outputFile), outputFile);
-		} else {
+		if(currCode < nextCode){
 			firstChar = decode(table, currCode, outputFile);
+		} else { // if the code is not in the table
+			fputc(firstChar = decode(table, prevCode, outputFile), outputFile);
 		}
 		// add new code to the table if not full
 		if(nextCode < tableSizeMax){
