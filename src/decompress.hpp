@@ -17,26 +17,23 @@ void decompress(FILE* inputFile, FILE* outputFile) {
 	int currCode;
 	int nextCode = 256;
 
-	int lastChar;
+	int firstChar;
 
 	prevCode = readBinary(inputFile);
 	if(prevCode == 0){
 		return;
 	}
 	fputc(prevCode, outputFile);
-
+	
 	while ((currCode = readBinary(inputFile)) > 0) {
-
 		if(currCode >= nextCode){
-			// nextCode increments everytime a new "code" is found
-			fputc(lastChar = decode(table, prevCode, outputFile), outputFile);
+			fputc(firstChar = decode(table, prevCode, outputFile), outputFile);
 		} else {
-			lastChar = decode(table, currCode, outputFile);
+			firstChar = decode(table, currCode, outputFile);
 		}
-		
 		// add new code to the table if not full
 		if(nextCode < tableSizeMax){
-			table.add(prevCode, lastChar, nextCode);
+			table.add(prevCode, firstChar, nextCode);
 			nextCode++;
 		}
 		
