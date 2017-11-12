@@ -37,9 +37,7 @@ void compress(FILE *inputFile, FILE *outputFile) {
 	}
 	
 	writeCode(outputFile, prefix); // encode last char
-	
-	if(leftover)
-		fputc(leftoverBits << 4, outputFile);
+	writeRemainder(outputFile);
 }
 
 

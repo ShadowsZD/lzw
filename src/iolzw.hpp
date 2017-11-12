@@ -1,11 +1,5 @@
 #ifndef IOLZWHPP
 #define IOLZWHPP
-/*
- * The way this works is that 12 bits on input are split into an 8 bit byte that is written
- *  to the output and the leftover 4 bits are saved for next time with bool leftover toggled
- * The next time we write another 12 bits we check for leftover, write it with 4 bits from
- *  the current input and write the rest, a byte, as well.
- */
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -80,6 +74,13 @@ int readBinary(FILE * input) {
         code = (code << 4) + (nextCode >> 4);
     }
     return code;
+}
+
+void writeRemainder(FILE * output){
+	if(leftover){
+		printf("Tem leftover /n");
+		fputc(leftoverBits << 4, output);
+	}
 }
 
 #endif
